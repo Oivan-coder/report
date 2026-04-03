@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="ru" id="top">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Централизация лабораторной службы</title>
+<style>
+:root {
+  --bg: #07111f;
+  --bg2: #0b1729;
+  --card: rgba(12, 23, 41, 0.88);
+  --card-2: rgba(16, 29, 49, 0.92);
+  --text: #edf4ff;
+  --muted: #9eb1cc;
+  --line: rgba(126, 153, 194, 0.18);
+  --blue: #5ea3ff;
+  --blue-2: #2d6cdf;
+  --cyan: #55d6ff;
+  --green: #37d39a;
+  --amber: #ffb648;
+  --red: #ff6b6b;
+  --violet: #9b8cff;
+  --shadow: 0 24px 60px rgba(0,0,0,.35);
+  --radius: 24px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(94,163,255,.18), transparent 55%),
+    radial-gradient(800px 500px at 100% 0%, rgba(85,214,255,.14), transparent 50%),
+    radial-gradient(700px 420px at 80% 80%, rgba(155,140,255,.12), transparent 55%),
+    linear-gradient(180deg, #06101d 0%, #081321 45%, #091626 100%);
+}
+.shell { max-width: 1440px; margin: 0 auto; padding: 28px; }
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 34px;
+  border-radius: 32px;
+  background:
+    linear-gradient(135deg, rgba(12,24,44,.96), rgba(15,40,74,.96)),
+    linear-gradient(135deg, #0a1a31, #0d2441);
+  border: 1px solid rgba(125,155,198,.16);
+  box-shadow: var(--shadow);
+}
+.hero:before {
+  content: "";
+  position: absolute;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  right: -120px; top: -140px;
+  background: radial-gradient(circle, rgba(94,163,255,.22), transparent 65%);
+}
+.hero:after {
+  content: "";
+  position: absolute;
+  width: 340px; height: 340px;
+  border-radius: 50%;
+  left: -80px; bottom: -140px;
+  background: radial-gradient(circle, rgba(85,214,255,.16), transparent 68%);
+}
+.eyebrow {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+  color: #c9daef;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.hero-grid {
+  position: relative;
+  z-index: 2;
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 24px;
+  align-items: end;
+}
+h1 {
+  margin: 0 0 10px;
+  font-size: 46px;
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+.subtitle {
+  margin: 0;
+  color: #bed2ea;
+  font-size: 18px;
+  max-width: 880px;
+  line-height: 1.45;
+}
+.hero-side {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.spark {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 22px;
+  padding: 18px;
+  backdrop-filter: blur(8px);
+}
+.spark-title {
+  color: #bed2ea;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+.spark-big {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+}
+.spark-note {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 8px;
+}
+.topnav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+.topnav a {
+  text-decoration: none;
+  color: #eaf3ff;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+.metrics {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+  min-height: 124px;
+}
+.metric-label { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+.metric-value { font-size: 32px; font-weight: 800; line-height: 1; }
+.metric-note { color: var(--muted); font-size: 13px; margin-top: 10px; }
+.charts {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 18px;
+}
+.chart-card, .card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.chart-head, .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 24px 12px;
+}
+.chart-title, .card-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+.badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.badge-blue { background: rgba(94,163,255,.14); color: #8fc2ff; }
+.badge-red { background: rgba(255,107,107,.14); color: #ff9d9d; }
+.badge-amber { background: rgba(255,182,72,.14); color: #ffc978; }
+.badge-green { background: rgba(55,211,154,.14); color: #7ee8be; }
+.chart-body, .card-body { padding: 0 24px 24px; }
+.bars { display: grid; gap: 14px; margin-top: 6px; }
+.bar-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 56px;
+  gap: 12px;
+  align-items: center;
+}
+.bar-label { color: #dfe9f8; font-size: 14px; }
+.bar-track {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.05);
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+.bar-fill.red { background: linear-gradient(90deg, #ff866d, #ff5c8a); }
+.bar-fill.green { background: linear-gradient(90deg, #2fd39f, #62f0b6); }
+.bar-val { text-align: right; color: var(--muted); font-size: 13px; }
+.gauge-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 4px;
+}
+.gauge {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 12px 8px 4px;
+}
+.ring {
+  --p: 50;
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  background:
+    conic-gradient(var(--blue) calc(var(--p) * 1%), rgba(255,255,255,.08) 0);
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.ring.green {
+  background:
+    conic-gradient(var(--green) calc(var(--p) * 1%), rgba(255,255,255,.08) 0);
+}
+.ring.amber {
+  background:
+    conic-gradient(var(--amber) calc(var(--p) * 1%), rgba(255,255,255,.08) 0);
+}
+.ring::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  background: #0b1729;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.ring span {
+  position: relative;
+  z-index: 1;
+  font-size: 24px;
+  font-weight: 800;
+}
+.gauge-label { font-size: 13px; color: var(--muted); text-align: center; line-height: 1.35; }
+.layout {
+  display: grid;
+  grid-template-columns: 1.34fr .96fr;
+  gap: 22px;
+  margin-top: 22px;
+}
+.stack { display: grid; gap: 22px; }
+.lead {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+ul.clean {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+ul.clean li {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--card-2);
+  border: 1px solid rgba(126,153,194,.14);
+  line-height: 1.55;
+}
+.risk-list li {
+  background: rgba(74, 25, 31, 0.52);
+  border-color: rgba(255,107,107,.18);
+}
+.issue-list li {
+  background: rgba(72, 48, 18, 0.52);
+  border-color: rgba(255,182,72,.18);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2px;
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+th {
+  color: var(--muted);
+  font-weight: 700;
+  background: rgba(255,255,255,.03);
+}
+.anchor-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.anchor-links a {
+  display: block;
+  text-decoration: none;
+  color: #eaf3ff;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 16px 0 6px;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 6px;
+}
+.status-box {
+  border-radius: 20px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+}
+.status-green {
+  background: linear-gradient(180deg, rgba(47,211,159,.12), rgba(47,211,159,.05));
+  border-color: rgba(47,211,159,.18);
+}
+.status-blue {
+  background: linear-gradient(180deg, rgba(94,163,255,.12), rgba(94,163,255,.05));
+  border-color: rgba(94,163,255,.18);
+}
+.status-red {
+  background: linear-gradient(180deg, rgba(255,107,107,.12), rgba(255,107,107,.05));
+  border-color: rgba(255,107,107,.18);
+}
+.status-kicker {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+  min-height: 36px;
+}
+.status-number {
+  margin-top: 10px;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+}
+.status-caption {
+  margin-top: 10px;
+  color: #d8e6fb;
+  font-size: 13px;
+  line-height: 1.35;
+}
+@media (max-width: 1240px) {
+  .hero-grid, .charts, .layout { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 760px) {
+  .shell { padding: 16px; }
+  h1 { font-size: 32px; }
+  .hero-side, .metrics, .gauge-wrap, .anchor-links { grid-template-columns: 1fr 1fr; }
+  .bar-row { grid-template-columns: 1fr; }
+}
+@media print {
+  body { background: #07111f; }
+  .topnav { display: none; }
+  .hero, .card, .chart-card, .metric-card { box-shadow: none; }
+}
+
+@media (max-width: 900px) {
+  .shell { padding: 14px; }
+  .hero { padding: 20px 18px 18px; border-radius: 22px; }
+  .eyebrow { font-size: 10px; padding: 7px 10px; letter-spacing: .06em; }
+  h1 { font-size: 28px; line-height: 1.08; margin: 12px 0 8px; }
+  .subtitle { font-size: 14px; line-height: 1.4; }
+  .hero-grid { grid-template-columns: 1fr; gap: 14px; }
+  .hero-side { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .spark { padding: 14px; border-radius: 16px; }
+  .spark-title { font-size: 11px; margin-bottom: 8px; }
+  .spark-big { font-size: 24px; }
+  .spark-note { font-size: 11px; line-height: 1.35; }
+
+  .topnav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .topnav a {
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 13px;
+    border-radius: 14px;
+  }
+
+  .metrics { grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .metric-card {
+    min-height: auto;
+    padding: 14px;
+    border-radius: 16px;
+  }
+  .metric-label { font-size: 12px; margin-bottom: 8px; }
+  .metric-value { font-size: 24px; }
+  .metric-note { font-size: 11px; margin-top: 8px; line-height: 1.35; }
+
+  .charts { grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
+  .status-grid { grid-template-columns: 1fr; gap: 10px; }
+  .status-box { padding: 14px; border-radius: 16px; }
+  .status-kicker { font-size: 12px; min-height: auto; }
+  .status-number { font-size: 28px; margin-top: 8px; }
+  .status-caption { font-size: 12px; margin-top: 8px; }
+  .chart-head, .card-header {
+    padding: 16px 16px 10px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .chart-title, .card-title { font-size: 19px; }
+  .badge { font-size: 11px; padding: 7px 10px; }
+  .chart-body, .card-body { padding: 0 16px 16px; }
+  .lead { font-size: 13px; line-height: 1.5; }
+
+  .bars { gap: 12px; }
+  .bar-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    align-items: start;
+  }
+  .bar-label { font-size: 13px; }
+  .bar-track { height: 12px; }
+  .bar-val { text-align: left; font-size: 12px; }
+
+  .gauge-wrap { grid-template-columns: 1fr; gap: 8px; }
+  .gauge {
+    grid-template-columns: 92px 1fr;
+    display: grid;
+    align-items: center;
+    justify-items: start;
+    gap: 12px;
+    padding: 6px 0;
+  }
+  .ring {
+    width: 92px;
+    height: 92px;
+  }
+  .ring::after { inset: 8px; }
+  .ring span { font-size: 18px; }
+  .gauge-label { text-align: left; font-size: 12px; }
+
+  .layout { grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
+  .stack { gap: 12px; }
+  .card, .chart-card { border-radius: 18px; }
+
+  ul.clean { gap: 10px; }
+  ul.clean li {
+    padding: 12px 13px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  table, thead, tbody, th, td, tr { display: block; }
+  thead {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+  table { margin-top: 0; }
+  tr {
+    margin-bottom: 10px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255,255,255,.03);
+  }
+  td {
+    border-bottom: 1px solid var(--line);
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  td:last-child { border-bottom: 0; }
+  td:nth-child(1)::before { content: "№ заявки"; display: block; color: var(--muted); font-size: 11px; margin-bottom: 4px; }
+  td:nth-child(2)::before { content: "Статус"; display: block; color: var(--muted); font-size: 11px; margin-bottom: 4px; }
+  td:nth-child(3)::before { content: "Ответственный"; display: block; color: var(--muted); font-size: 11px; margin-bottom: 4px; }
+  td:nth-child(4)::before { content: "Срок / перенос"; display: block; color: var(--muted); font-size: 11px; margin-bottom: 4px; }
+
+  .anchor-links { grid-template-columns: 1fr; gap: 8px; }
+  .anchor-links a {
+    padding: 11px 12px;
+    font-size: 13px;
+    border-radius: 14px;
+  }
+
+  .footer { font-size: 12px; padding: 12px 0 2px; }
+}
+
+@media (max-width: 420px) {
+  .hero-side,
+  .metrics,
+  .topnav { grid-template-columns: 1fr; }
+  .shell { padding: 10px; }
+  .hero { padding: 16px 14px 14px; }
+  h1 { font-size: 24px; }
+  .subtitle { font-size: 13px; }
+  .metric-value { font-size: 22px; }
+  .chart-title, .card-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <section class="hero">
+    <div class="eyebrow">Министерство здравоохранения · еженедельный статус</div>
+    <div class="hero-grid">
+      <div>
+        <h1>Централизация лабораторной службы</h1>
+        <p class="subtitle">Период с 23.03.2026 по 27.03.2026</p>
+      </div>
+      <div class="hero-side">
+        <div class="spark">
+          <div class="spark-title">Ключевой риск</div>
+          <div class="spark-big">80%</div>
+          <div class="spark-note">не сгенерированных ТАП от общего числа</div>
+        </div>
+        <div class="spark">
+          <div class="spark-title">Контрольный срок</div>
+          <div class="spark-big">15.04</div>
+          <div class="spark-note">действие контракта ЛИС-Брегис</div>
+        </div>
+        <div class="spark">
+          <div class="spark-title">Ответственные ПВБ/ППБ</div>
+          <div class="spark-big">99%</div>
+          <div class="spark-note">предоставление данных медицинскими организациями</div>
+        </div>
+        <div class="spark">
+          <div class="spark-title">ЕМИАС</div>
+          <div class="spark-big">97%</div>
+          <div class="spark-note">предоставление данных ответственными лицами</div>
+        </div>
+      </div>
+    </div>
+    <nav class="topnav">
+      <a href="#done">Сделано</a>
+      <a href="#risks">Красные зоны</a>
+      <a href="#tickets">Доработки</a>
+      <a href="#issues">Проблематика</a>
+      <a href="#plan">План</a>
+    </nav>
+  </section>
+
+  <section class="metrics">
+    
+    <div class="metric-card">
+      <div class="metric-label">Выполнено блоков работ</div>
+      <div class="metric-value">12</div>
+      <div class="metric-note">в отчетный период</div>
+    </div>
+    
+
+    <div class="metric-card">
+      <div class="metric-label">Просрочено задач</div>
+      <div class="metric-value">35</div>
+      <div class="metric-note">по Битрикс</div>
+    </div>
+    
+
+    <div class="metric-card">
+      <div class="metric-label">Ответственные ПВБ/ППБ</div>
+      <div class="metric-value">74 / 75</div>
+      <div class="metric-note">МО предоставили данные</div>
+    </div>
+    
+
+    <div class="metric-card">
+      <div class="metric-label">ЕМИАС</div>
+      <div class="metric-value">73 / 75</div>
+      <div class="metric-note">МО предоставили данные</div>
+    </div>
+    
+
+    <div class="metric-card">
+      <div class="metric-label">Не сгенерировано ТАП</div>
+      <div class="metric-value">80%</div>
+      <div class="metric-note">от общего числа</div>
+    </div>
+    
+
+    <div class="metric-card">
+      <div class="metric-label">Критический срок контракта</div>
+      <div class="metric-value">15.04.2026</div>
+      <div class="metric-note">ЛИС-Брегис</div>
+    </div>
+    
+  </section>
+
+  <section class="charts">
+    <article class="chart-card">
+      <div class="chart-head">
+        <h2 class="chart-title">Операционный статус недели</h2>
+        <span class="badge badge-blue">Ключевые показатели</span>
+      </div>
+      <div class="chart-body">
+        <p class="lead">Блок показывает независимые показатели отчетного периода без сравнительной шкалы.</p>
+        <div class="status-grid">
+          <div class="status-box status-green">
+            <div class="status-kicker">Выполнено за отчетный период</div>
+            <div class="status-number">12</div>
+            <div class="status-caption">задач и блоков работ</div>
+          </div>
+          <div class="status-box status-blue">
+            <div class="status-kicker">План следующего периода</div>
+            <div class="status-number">7</div>
+            <div class="status-caption">задач и рабочих направлений</div>
+          </div>
+          <div class="status-box status-red">
+            <div class="status-kicker">Просроченные задачи</div>
+            <div class="status-number">35</div>
+            <div class="status-caption">в Битрикс на дату отчета</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="chart-card">
+      <div class="chart-head">
+        <h2 class="chart-title">Индикаторы контроля</h2>
+        <span class="badge badge-amber">Критические точки</span>
+      </div>
+      <div class="chart-body">
+        <div class="gauge-wrap">
+          <div class="gauge">
+            <div class="ring green" style="--p:99"><span>99%</span></div>
+            <div class="gauge-label">Ответственные ПВБ/ППБ<br>предоставление данных</div>
+          </div>
+          <div class="gauge">
+            <div class="ring" style="--p:97"><span>97%</span></div>
+            <div class="gauge-label">ЕМИАС<br>предоставление данных</div>
+          </div>
+          <div class="gauge">
+            <div class="ring amber" style="--p:80"><span>80%</span></div>
+            <div class="gauge-label">Не сгенерированные ТАП<br>от общего числа</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="layout">
+    <div class="stack">
+      <article class="card" id="done">
+        <div class="card-header">
+          <h2 class="card-title">Ключевые результаты недели</h2>
+          <span class="badge badge-green">Исполнение</span>
+        </div>
+        <div class="card-body">
+          <p class="lead">За отчетный период выполнен комплекс аналитических, методических и организационных работ по направлению централизации лабораторной службы.</p>
+          <ul class="clean">
+            <li class="">Презентация для еженедельных совещаний с заместителем Председателя Правительства Московской области — министром здравоохранения Московской области М.В. Забелиным.</li>
+<li class="">Целевые показатели проекта на дашборд.</li>
+<li class="">Чек-лист для аудита лабораторной службы.</li>
+<li class="">Файл приоритизации по лаборатории.</li>
+<li class="">Анализ кадровой структуры ЦКДЛ: выгрузка штатного расписания 1С, анализ выгрузки, сводная презентация по кадровой структуре в разрезе ЦКДЛ.</li>
+<li class="">Отработка 12 жалоб по МСЭД.</li>
+<li class="">ТПР дашборд.</li>
+<li class="">Выгрузка госпитальных комплексов ЕМИАС: аудит структуры БД ЕМИАС, формирование ТЗ для выгрузки.</li>
+<li class="">ТЗ на выгрузку внешних назначений за 2026 год.</li>
+<li class="">Памятка для врачей по назначению исследований в ЦКДЛ.</li>
+<li class="">Распределение лабораторно-диагностических исследований по уровням выполнения и маршрутизация биологического материала.</li>
+<li class="">Презентация ГВ.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="card" id="tickets">
+        <div class="card-header">
+          <h2 class="card-title">Доработки и заявки</h2>
+          <span class="badge badge-blue">Контроль исполнения</span>
+        </div>
+        <div class="card-body">
+          <table>
+            <thead>
+              <tr>
+                <th>№ заявки</th>
+                <th>Статус</th>
+                <th>Ответственный</th>
+                <th>Срок / перенос</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>СТП-695382</td><td>В работе</td><td>Шепелева Г.А.</td><td>11.03</td></tr>
+<tr><td>СТП-695400</td><td>Эскалировано внешнему исполнителю</td><td>Бичевая Е.О.</td><td>11.03</td></tr>
+<tr><td>СТП-697281</td><td>Выполнена, но не отработана</td><td>Парфенова А.С.</td><td>25.03</td></tr>
+<tr><td>СТП-697283</td><td>Эскалировано внешнему исполнителю</td><td>Качура Н.С.</td><td>26.03</td></tr>
+<tr><td>СТП-697675</td><td>В работе</td><td>Шепелева Г.А.</td><td>26.03</td></tr>
+<tr><td>Битрикс № 1472836</td><td>Реализация</td><td>Дмитриева О.Н.</td><td>24.04</td></tr>
+<tr><td>Битрикс № 1431141</td><td>Срок согласуется</td><td>Дмитриева О.Н.</td><td>Согл. ТПР</td></tr>
+<tr><td>Битрикс № 1415958</td><td>Перенос</td><td>Дмитриева О.Н.</td><td>12.03.2026 → 20.03.2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="card" id="plan">
+        <div class="card-header">
+          <h2 class="card-title">План на следующую неделю</h2>
+          <span class="badge badge-blue">Следующий период</span>
+        </div>
+        <div class="card-body">
+          <p class="lead">План работы на период с 30.03.2026 по 03.04.2026</p>
+          <ul class="clean">
+            <li class="">Отработка 8 ОГ МСЭД.</li>
+<li class="">Совещания: РГ; СЭМД (31.03.2026).</li>
+<li class="">Расчет целевых показателей проекта за I квартал.</li>
+<li class="">Разработка KPI для главных врачей ЦКДЛ.</li>
+<li class="">Анализ мощностей ЦКД на предмет выполнения ЖЦ и ВПЧ.</li>
+<li class="">Разработка шаблона цитологического исследования.</li>
+<li class="">МЖУР МОЦОМД и МООД.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <div class="stack">
+      <article class="card" id="risks">
+        <div class="card-header">
+          <h2 class="card-title">Красные зоны</h2>
+          <span class="badge badge-red">Риски</span>
+        </div>
+        <div class="card-body">
+          <ul class="clean risk-list">
+            <li class="">Контракт с подрядчиком ЛИС-Брегис действует до 15 апреля 2026 года.</li>
+<li class="">Процент не сгенерированных ТАП от общего числа — 80%.</li>
+<li class="">Не настроен запрет внесения результатов анализов в МИС, выполненных вручную.</li>
+<li class="">Не настроен запрет назначения лабораторных услуг на закрытые лаборатории.</li>
+<li class="">Отсутствует интеграция лабораторного оборудования, предоставленного по ДБП, в УРО. Требуется доработка, срок не установлен.</li>
+<li class="">Не завершена интеграция результатов лабораторных исследований из базы внешнего подрядчика.</li>
+<li class="">Не завершена интеграция модуля ЛИС «Склад» с ЕИС закупки; сдвиг сроков: март → сентябрь 2026 года. Ответственный — подрядчик по ГК.</li>
+<li class="">Отсутствуют НПА в рамках плана централизации на 2026 год по направлениям СПИД и КВД; контрольный срок — 13.03.2026.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="card" id="issues">
+        <div class="card-header">
+          <h2 class="card-title">Проблематика</h2>
+          <span class="badge badge-amber">Требует внимания</span>
+        </div>
+        <div class="card-body">
+          <ul class="clean issue-list">
+            <li class="">35 задач просрочено в Битрикс, из них 2 задачи находятся у главных врачей.</li>
+<li class="">Протокольные поручения не отрабатываются ответственными лицами МО в установленный срок.</li>
+<li class="">Ответственные лица ПВБ/ППБ предоставили данные по 74 из 75 МО.</li>
+<li class="">Ответственные по внесению пациентов в ЕМИАС предоставили данные по 73 из 75 МО.</li>
+<li class="">Ввиду неготовности Королёвской Б централизация МОЦОМД и Котельниковской П перенесена на II квартал 2026 года.</li>
+<li class="">Не выполнен расчет услуг ТПГГ по 4 ЦКДЛ из 8.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="card" id="links">
+        <div class="card-header">
+          <h2 class="card-title">Навигация по разделам</h2>
+          <span class="badge badge-blue">Ссылки</span>
+        </div>
+        <div class="card-body">
+          <div class="anchor-links">
+            <a href="#done">Перейти к выполненным работам</a>
+            <a href="#risks">Перейти к рискам</a>
+            <a href="#tickets">Перейти к статусу доработок</a>
+            <a href="#issues">Перейти к проблематике</a>
+            <a href="#plan">Перейти к плану следующего периода</a>
+            <a href="#top">Вернуться к началу</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="footer">Еженедельный статус направления</div>
+</div>
+</body>
+</html>
