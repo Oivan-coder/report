@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Atlas Finance</title>
+  <meta name="theme-color" content="#f5f5f7" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Atlas Finance</p>
+        <h1>Сегодня</h1>
+        <p id="cycleCaption" class="muted">Финансовый цикл загружается</p>
+      </div>
+      <button id="syncBtn" class="icon-button" type="button" aria-label="Синхронизация" title="Синхронизация">↻</button>
+    </header>
+
+    <section id="syncStatus" class="sync-strip" hidden></section>
+
+    <nav class="segmented-tabs" aria-label="Разделы">
+      <button class="tab-button active" type="button" data-tab="today">Сегодня</button>
+      <button class="tab-button" type="button" data-tab="review">Вопросы</button>
+      <button class="tab-button" type="button" data-tab="activity">Операции</button>
+    </nav>
+
+    <section class="tab-panel active" data-panel="today">
+      <section class="hero-card" aria-label="Дневной лимит">
+        <div class="hero-copy">
+          <span class="label">Можно сегодня</span>
+          <strong id="dailyLimit">—</strong>
+          <small id="daysLeft">—</small>
+        </div>
+        <div id="limitRing" class="limit-ring" aria-hidden="true">
+          <span id="limitPercent">—</span>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Главные показатели">
+        <article class="metric-card">
+          <span>Свободно</span>
+          <strong id="freeMoney">—</strong>
+        </article>
+        <article class="metric-card">
+          <span>Потрачено</span>
+          <strong id="totalSpent">—</strong>
+        </article>
+        <article class="metric-card">
+          <span>Темп</span>
+          <strong id="burnRate">—</strong>
+        </article>
+        <article class="metric-card">
+          <span>Прогноз</span>
+          <strong id="forecastStatus">—</strong>
+        </article>
+      </section>
+
+      <section class="panel quick-panel">
+        <div class="section-title">
+          <h2>Расход</h2>
+          <span id="quickSyncHint">готово</span>
+        </div>
+        <form id="transactionForm" class="quick-form">
+          <label class="amount-field">
+            <span>₽</span>
+            <input id="amountInput" inputmode="decimal" autocomplete="off" placeholder="0" required />
+          </label>
+          <div id="categoryChips" class="chip-grid" aria-label="Категории"></div>
+          <div id="detailChips" class="chip-row" aria-label="Подкатегории"></div>
+          <input id="descriptionInput" autocomplete="off" placeholder="Комментарий" />
+          <button class="primary-button" type="submit">Добавить</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <h2>Категории</h2>
+          <span id="categorySummary">—</span>
+        </div>
+        <div id="categoryList" class="category-list"></div>
+      </section>
+    </section>
+
+    <section class="tab-panel" data-panel="review">
+      <section class="panel review-hero">
+        <div>
+          <span class="label">Июнь</span>
+          <h2>Вопросы месяца</h2>
+        </div>
+        <strong id="reviewCount">—</strong>
+      </section>
+      <div id="reviewList" class="review-list"></div>
+      <section class="panel goals-panel">
+        <div class="section-title">
+          <h2>Цели</h2>
+          <span id="goalsSummary">—</span>
+        </div>
+        <div id="goalsList" class="simple-list"></div>
+      </section>
+    </section>
+
+    <section class="tab-panel" data-panel="activity">
+      <section class="panel">
+        <div class="section-title">
+          <h2>Последние операции</h2>
+          <button id="exportBtn" class="text-button" type="button">JSON</button>
+        </div>
+        <div id="transactionList" class="transaction-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Нижняя навигация">
+    <button class="bottom-nav-button active" type="button" data-tab="today"><span>⌂</span>Сегодня</button>
+    <button class="bottom-nav-button" type="button" data-tab="review"><span>✓</span>Вопросы</button>
+    <button class="bottom-nav-button" type="button" data-tab="activity"><span>≡</span>Операции</button>
+  </nav>
+
+  <dialog id="editDialog" class="edit-dialog">
+    <form id="editForm" method="dialog">
+      <div class="dialog-head">
+        <h2>Операция</h2>
+        <button id="closeEditBtn" class="icon-button small" type="button" aria-label="Закрыть">×</button>
+      </div>
+      <input id="editIdInput" type="hidden" />
+      <label>
+        <span>Сумма</span>
+        <input id="editAmountInput" inputmode="decimal" required />
+      </label>
+      <label>
+        <span>Категория</span>
+        <select id="editCategoryInput"></select>
+      </label>
+      <label>
+        <span>Комментарий</span>
+        <input id="editDescriptionInput" autocomplete="off" />
+      </label>
+      <button class="primary-button" type="submit">Сохранить</button>
+    </form>
+  </dialog>
+
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>

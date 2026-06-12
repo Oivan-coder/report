@@ -1,0 +1,262 @@
+[
+  {
+    "id": "seed-0001",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Одежда/техника/хобби",
+    "description": "Другие услуги",
+    "amount": 5710.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0002",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Текущие расходы авто",
+    "description": "АЗС",
+    "amount": 3313.84,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0003",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Еда дома",
+    "description": "Супермаркеты",
+    "amount": 3084.02,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0004",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "Кафе и рестораны",
+    "amount": 2099.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0005",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Связь/подписки/парковка",
+    "description": "Цифровой контент",
+    "amount": 1689.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0006",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "Алкоголь",
+    "amount": 1010.93,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0007",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Переводы людям",
+    "description": "Перевод людям",
+    "amount": 800.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0008",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Связь/подписки/парковка",
+    "description": "Сотовая связь",
+    "amount": 450.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0009",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Текущие расходы авто",
+    "description": "Государственные услуги",
+    "amount": 412.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0010",
+    "date": "2026-06-07T00:00",
+    "type": "expense",
+    "category": "Текущие расходы авто",
+    "description": "Автоуслуги",
+    "amount": 330.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0011",
+    "date": "2026-06-07T17:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "",
+    "amount": 3000.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0012",
+    "date": "2026-06-07T17:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "Мак",
+    "amount": 484.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0013",
+    "date": "2026-06-08T17:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "Вкус вилл на работе ",
+    "amount": 148.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0014",
+    "date": "2026-06-08T17:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "Обед кофепорт",
+    "amount": 295.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0015",
+    "date": "2026-06-08T17:00",
+    "type": "expense",
+    "category": "Бензин",
+    "description": "Платка",
+    "amount": 309.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0016",
+    "date": "2026-06-08T17:00",
+    "type": "expense",
+    "category": "Еда дома",
+    "description": "",
+    "amount": 219.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0017",
+    "date": "2026-06-08T17:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "Посидел с ЛИ",
+    "amount": 740.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0018",
+    "date": "2026-06-09T17:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "Обед ",
+    "amount": 295.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0019",
+    "date": "2026-06-09T17:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "Мак",
+    "amount": 434.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0020",
+    "date": "2026-06-10T17:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "Вв обед",
+    "amount": 288.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0021",
+    "date": "2026-06-10T17:00",
+    "type": "expense",
+    "category": "Еда дома",
+    "description": "",
+    "amount": 420.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0022",
+    "date": "2026-06-10T17:00",
+    "type": "expense",
+    "category": "Еда дома",
+    "description": "",
+    "amount": 1370.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0023",
+    "date": "2026-06-11T17:00",
+    "type": "expense",
+    "category": "Бензин",
+    "description": "платка",
+    "amount": 103.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0024",
+    "date": "2026-06-11T17:00",
+    "type": "expense",
+    "category": "Кафе/бар/доставка",
+    "description": "завтрак от 11.06",
+    "amount": 480.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0025",
+    "date": "2026-06-11T17:00",
+    "type": "expense",
+    "category": "Бензин",
+    "description": "",
+    "amount": 3836.0,
+    "account": "Основной счет",
+    "comment": ""
+  },
+  {
+    "id": "seed-0026",
+    "date": "2026-06-11T17:00",
+    "type": "expense",
+    "category": "Одежда/техника/хобби",
+    "description": "на др на работе",
+    "amount": 400.0,
+    "account": "Основной счет",
+    "comment": ""
+  }
+]
